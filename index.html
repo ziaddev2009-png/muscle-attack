@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muscle Attack | 2M Style Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-red: #ff0000;
+            --accent-yellow: #ffcc00;
+            --bg-dark: #0f0f0f;
+            --card-bg: #181818;
+            --border-color: #282828;
+        }
+
+        body { 
+            background-color: var(--bg-dark); 
+            color: #fff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+
+        .announcement-bar {
+            background: linear-gradient(90deg, #b30000 0%, #ff0000 100%);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 0;
+            text-align: center;
+        }
+
+        .navbar { 
+            background-color: #121212; 
+            border-bottom: 2px solid var(--primary-red); 
+        }
+
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=1200') center/cover no-repeat;
+            padding: 60px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-card { 
+            background-color: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 10px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card:hover { 
+            transform: translateY(-5px);
+            border-color: var(--primary-red);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-red);
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .product-img-box {
+            height: 200px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .product-img-box img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.88rem;
+            margin-left: 8px;
+        }
+        .new-price {
+            color: var(--accent-yellow);
+            font-weight: bold;
+            font-size: 1.15rem;
+        }
+
+        .btn-danger-custom { 
+            background-color: var(--primary-red); 
+            color: #fff; 
+            font-weight: bold; 
+            border: none;
+        }
+        .btn-danger-custom:hover { 
+            background-color: #cc0000; 
+            color: #fff;
+        }
+
+        .section-box { display: none; }
+        .active-section { display: block !important; }
+
+        .nav-tabs .nav-link { color: #aaa; border: none; }
+        .nav-tabs .nav-link.active { background-color: var(--primary-red); color: #fff; font-weight: bold; border-radius: 5px; }
+        .page-content-box { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="announcement-bar">
+        🔥 شحن سريع لجميع المحافظات | عروض خاصة وخصومات حصرياً لدى Muscle Attack 🔥
+    </div>
+
+    <nav class="navbar navbar-dark navbar-expand-lg p-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-danger" href="#">💪 MUSCLE ATTACK</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav mx-auto" id="dynamic-nav-links"></ul>
+                <div id="nav-auth-links"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+
+        <!-- 1. تسجيل الدخول والحساب الجديد -->
+        <div id="auth-section" class="section-box row justify-content-center my-5 active-section">
+            <div class="col-md-5">
+                <div class="card p-4 shadow bg-dark border-secondary">
+                    <ul class="nav nav-pills mb-3 justify-content-center">
+                        <li class="nav-item">
+                            <button class="nav-link active btn-danger-custom me-2" data-bs-toggle="pill" data-bs-target="#pills-login" type="button">تسجيل الدخول</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link text-white" data-bs-toggle="pill" data-bs-target="#pills-signup" type="button">حساب جديد</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="pills-login">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label class="form-label">البريد الإلكتروني</label>
+                                    <input type="email" id="loginEmail" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">كلمة المرور</label>
+                                    <input type="password" id="loginPassword" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-danger-custom w-100 py-2">دخول</button>
+                                <p id="loginError" class="text-danger text-center mt-2 small"></p>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="pills-signup">
+                            <form id="signupForm">
+                                <div class="mb-3">
+                                    <label class="form-label">الاسم الكامل</label>
+                                    <input type="text" id="signupName" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">البريد الإلكتروني</label>
+                                    <input type="email" id="signupEmail" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">كلمة المرور</label>
+                                    <input type="password" id="signupPassword" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-danger-custom w-100 py-2">تسجيل</button>
+                                <p id="signupError" class="text-center mt-2 small"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. واجهة المتجر والصفحات الديناميكية -->
+        <div id="store-section" class="section-box">
+            <div id="dynamic-page-container"></div>
+        </div>
+
+        <!-- 3. لوحة تحكم الآدمن -->
+        <div id="admin-section" class="section-box">
+            <h2 class="text-danger mb-4 fw-bold">لوحة تحكم الإدارة ⚙️</h2>
+
+            <ul class="nav nav-tabs mb-4 border-bottom border-secondary" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active px-4 py-2 me-2" data-bs-toggle="tab" data-bs-target="#admin-preview-content" type="button">🛒 معاينة المتجر</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link px-4 py-2 me-2" data-bs-toggle="tab" data-bs-target="#admin-manage-content" type="button">⚙️ إدارة المنتجات والعروض</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link px-4 py-2 me-2" data-bs-toggle="tab" data-bs-target="#admin-sections-content" type="button">📂 الأقسام والصفحات</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link px-4 py-2" data-bs-toggle="tab" data-bs-target="#admin-users-content" type="button">🚫 إدارة المستخدمين</button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="admin-preview-content">
+                    <div class="row" id="admin-products-preview-list"></div>
+                </div>
+
+                <div class="tab-pane fade" id="admin-manage-content">
+                    <div class="card p-4 mb-4 bg-dark border-secondary">
+                        <h4 class="mb-3 text-danger">إضافة منتج أو عرض خاص 🔥</h4>
+                        <form id="addProductForm" class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">اسم المنتج</label>
+                                <input type="text" id="newProdName" class="form-control" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">السعر الجديد (ج.م)</label>
+                                <input type="number" id="newProdPrice" class="form-control" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">نوع المنتج</label>
+                                <select id="isOfferSelect" class="form-select">
+                                    <option value="false">عادي</option>
+                                    <option value="true">🔥 عرض (خصم)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 offer-fields" style="display: none;">
+                                <label class="form-label">السعر القديم</label>
+                                <input type="number" id="oldPriceInput" class="form-control">
+                            </div>
+                            <div class="col-md-3 offer-fields" style="display: none;">
+                                <label class="form-label">نسبة الخصم</label>
+                                <input type="text" id="discountTagInput" class="form-control" placeholder="خصم 20%">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">الوصف</label>
+                                <input type="text" id="newProdDesc" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">رفع صورة 📁</label>
+                                <input type="file" id="newProdFile" class="form-control" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">أو رابط صورة (URL)</label>
+                                <input type="text" id="newProdImg" class="form-control">
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-danger-custom py-2 px-4">إضافة المنتج</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card p-4 bg-dark border-secondary">
+                        <h4 class="mb-3 text-danger">قائمة المنتجات والتعديل</h4>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>الصورة</th>
+                                        <th>المنتج</th>
+                                        <th>النوع</th>
+                                        <th>السعر</th>
+                                        <th>تعديل السعر</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-products-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="admin-sections-content">
+                    <div class="card p-4 mb-4 bg-dark border-secondary">
+                        <h4 class="mb-3 text-danger">إضافة قسم جديد</h4>
+                        <form id="addSectionForm" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">عنوان القسم</label>
+                                <input type="text" id="secTitle" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">نوع القسم</label>
+                                <select id="secType" class="form-select">
+                                    <option value="products">كل المنتجات</option>
+                                    <option value="offers">🔥 قسم العروض فقط</option>
+                                    <option value="text">صفحة نصية</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12" id="textDescContainer" style="display: none;">
+                                <label class="form-label">محتوى الصفحة النصية</label>
+                                <textarea id="secContent" class="form-control" rows="4"></textarea>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-danger-custom py-2 px-4">إضافة القسم</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card p-4 bg-dark border-secondary">
+                        <h4 class="mb-3 text-danger">الأقسام الحالية</h4>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>العنوان</th>
+                                        <th>النوع</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-sections-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="admin-users-content">
+                    <div class="card p-4 bg-dark border-secondary">
+                        <h4 class="mb-3 text-danger">إدارة المستخدمين 🚫</h4>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>الاسم</th>
+                                        <th>البريد</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- modal الطلب -->
+    <div class="modal fade" id="orderModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title text-danger fw-bold" id="modalProductName">تأكيد الطلب</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="orderForm">
+                        <input type="hidden" id="productNameInput">
+                        <input type="hidden" id="productPriceInput">
+                        <div class="mb-3">
+                            <label class="form-label">رقم الهاتف</label>
+                            <input type="tel" id="customerPhone" class="form-control" required placeholder="010xxxxxxxx">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">عنوان الاستلام بالتفصيل</label>
+                            <textarea id="customerAddress" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger-custom w-100 py-2 fw-bold"><i class="fa-brands fa-whatsapp me-2"></i> تأكيد وإرسال عبر الواتساب</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const firebaseConfig = {
+                apiKey: "AIzaSyBnOWiHh_IV8MQ_gQF8schsv2x1qXBLbs",
+                authDomain: "muscleattack-dd4b9.firebaseapp.com",
+                databaseURL: "https://muscleattack-dd4b9-default-rtdb.firebaseio.com",
+                projectId: "muscleattack-dd4b9",
+                storageBucket: "muscleattack-dd4b9.appspot.com",
+                messagingSenderId: "538447515242",
+                appId: "1:538447515242:web:2a2ebe9ef6dbfc24e70413",
+                measurementId: "G-6YK2YYW8H"
+            };
+
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            const db = firebase.database();
+
+            let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+            window.updateUI = function() {
+                const authSection = document.getElementById('auth-section');
+                const storeSection = document.getElementById('store-section');
+                const adminSection = document.getElementById('admin-section');
+                const navAuthLinks = document.getElementById('nav-auth-links');
+
+                authSection.classList.remove('active-section');
+                storeSection.classList.remove('active-section');
+                adminSection.classList.remove('active-section');
+
+                if (!currentUser) {
+                    authSection.classList.add('active-section');
+                    navAuthLinks.innerHTML = `<span class="text-muted small">يرجى تسجيل الدخول</span>`;
+                } else if (currentUser.isAdmin) {
+                    adminSection.classList.add('active-section');
+                    navAuthLinks.innerHTML = `<span class="text-danger fw-bold me-3">أهلاً يا آدمن (${currentUser.name})</span> <button class="btn btn-outline-light btn-sm" onclick="logout()">تسجيل خروج</button>`;
+                    loadDynamicNavbar();
+                    listenAdminData();
+                } else {
+                    storeSection.classList.add('active-section');
+                    navAuthLinks.innerHTML = `<span class="text-white me-3">مرحباً، ${currentUser.name}</span> <button class="btn btn-outline-light btn-sm" onclick="logout()">تسجيل خروج</button>`;
+                    loadDynamicNavbar();
+                }
+            };
+
+            function loadDynamicNavbar() {
+                db.ref('sections').on('value', snapshot => {
+                    const navLinks = document.getElementById('dynamic-nav-links');
+                    navLinks.innerHTML = "";
+                    let firstSection = null;
+
+                    snapshot.forEach(child => {
+                        const sec = child.val();
+                        if (!firstSection) firstSection = sec;
+
+                        navLinks.innerHTML += `
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-bold px-3 section-link" href="#" onclick="renderPageContent('${sec.title}', '${sec.type}', '${encodeURIComponent(sec.content || '')}')">${sec.title}</a>
+                            </li>
+                        `;
+                    });
+
+                    if (firstSection) {
+                        renderPageContent(firstSection.title, firstSection.type, firstSection.content || '');
+                    }
+                });
+            }
+
+            window.renderPageContent = function(title, type, content) {
+                const container = document.getElementById('dynamic-page-container');
+                
+                if (type === 'products' || type === 'offers') {
+                    container.innerHTML = `
+                        <div class="hero-banner text-center">
+                            <h1 class="fw-bold text-white mb-3">أقوى المكملات الغذائية الأصلية 100%</h1>
+                            <p class="fs-5 text-light">طور لياقتك وضخامتك العضلية مع تشكيلة Muscle Attack المعتمدة</p>
+                        </div>
+                        <h3 class="mb-4 text-danger fw-bold text-center border-bottom border-secondary pb-2">${title}</h3>
+                        <div class="row" id="products-list"></div>
+                    `;
+                    fetchStoreProducts(type === 'offers');
+                } else {
+                    container.innerHTML = `
+                        <h2 class="mb-4 text-danger text-center fw-bold">${title}</h2>
+                        <div class="page-content-box fs-5 lh-lg text-center">
+                            <p>${decodeURIComponent(content)}</p>
+                        </div>
+                    `;
+                }
+            };
+
+            function fetchStoreProducts(onlyOffers = false) {
+                db.ref('products').on('value', snapshot => {
+                    const productsList = document.getElementById('products-list');
+                    if (!productsList) return;
+                    productsList.innerHTML = "";
+
+                    snapshot.forEach(child => {
+                        const p = child.val();
+                        if (onlyOffers && !p.isOffer) return;
+
+                        const discountBadgeHtml = p.isOffer && p.discountTag ? `<span class="discount-badge">${p.discountTag}</span>` : '';
+                        const oldPriceHtml = p.isOffer && p.oldPrice > 0 ? `<span class="old-price">${p.oldPrice} ج.م</span>` : '';
+
+                        productsList.innerHTML += `
+                            <div class="col-md-4 mb-4">
+                                <div class="product-card h-100 shadow">
+                                    ${discountBadgeHtml}
+                                    <div class="product-img-box">
+                                        <img src="${p.img || 'https://via.placeholder.com/300'}" alt="${p.name}">
+                                    </div>
+                                    <div class="card-body d-flex flex-column p-3">
+                                        <h5 class="card-title fw-bold text-white mb-2">${p.name}</h5>
+                                        <p class="card-text text-muted small flex-grow-1">${p.desc}</p>
+                                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                                            <div>
+                                                <span class="new-price">${p.price} ج.م</span>
+                                                ${oldPriceHtml}
+                                            </div>
+                                            <button class="btn btn-danger-custom btn-sm py-2 px-3" onclick="openOrderModal('${p.name}', ${p.price})">اطلب الآن <i class="fa-solid fa-cart-shopping ms-1"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+            }
+
+            document.getElementById('isOfferSelect').addEventListener('change', function() {
+                const fields = document.querySelectorAll('.offer-fields');
+                fields.forEach(f => f.style.display = this.value === 'true' ? 'block' : 'none');
+            });
+
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const pass = document.getElementById('loginPassword').value;
+
+                db.ref('users').once('value', snapshot => {
+                    let foundUser = null;
+                    snapshot.forEach(child => {
+                        const u = child.val();
+                        if (u.email === email && u.password === pass) {
+                            foundUser = { id: child.key, ...u };
+                        }
+                    });
+
+                    if (foundUser) {
+                        if (foundUser.isBlocked) {
+                            document.getElementById('loginError').innerText = "عذراً، هذا الحساب محظور من دخول الموقع.";
+                            return;
+                        }
+                        currentUser = foundUser;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        updateUI();
+                    } else {
+                        document.getElementById('loginError').innerText = "البريد الإلكتروني أو كلمة المرور غير صحيحة!";
+                    }
+                });
+            });
+
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const pass = document.getElementById('signupPassword').value;
+
+                db.ref('users').once('value', snapshot => {
+                    let exists = false;
+                    snapshot.forEach(child => {
+                        if (child.val().email === email) exists = true;
+                    });
+
+                    if (exists) {
+                        document.getElementById('signupError').className = "text-danger text-center mt-2 small";
+                        document.getElementById('signupError').innerText = "البريد الإلكتروني مسجل بالفعل!";
+                    } else {
+                        db.ref('users').push({ name, email, password: pass, isAdmin: false, isBlocked: false });
+                        document.getElementById('signupError').className = "text-success text-center mt-2 small";
+                        document.getElementById('signupError').innerText = "تم إنشاء الحساب بنجاح! انتقل لتبويب تسجيل الدخول.";
+                    }
+                });
+            });
+
+            window.logout = function() {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                updateUI();
+            };
+
+            let myModal = new bootstrap.Modal(document.getElementById('orderModal'));
+            window.openOrderModal = function(name, price) {
+                document.getElementById('modalProductName').innerText = "تأكيد طلب: " + name;
+                document.getElementById('productNameInput').value = name;
+                document.getElementById('productPriceInput').value = price;
+                myModal.show();
+            };
+
+            document.getElementById('orderForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const phone = document.getElementById('customerPhone').value;
+                const address = document.getElementById('customerAddress').value;
+                const productName = document.getElementById('productNameInput').value;
+                const productPrice = document.getElementById('productPriceInput').value;
+                const adminPhone = "201012345678";
+
+                const message = `🚨 *طلب جديد من متجر Muscle Attack!*\n\n` +
+                                `📦 *المنتج:* ${productName}\n` +
+                                `💰 *السعر:* ${productPrice} جنيه\n\n` +
+                                `👤 *اسم العميل:* ${currentUser.name}\n` +
+                                `📞 *رقم الهاتف:* ${phone}\n` +
+                                `📍 *العنوان:* ${address}\n\n` +
+                                `أرجو مراجعة الطلب وتأكيده!`;
+
+                window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`, '_blank');
+            });
+
+            document.getElementById('secType').addEventListener('change', function() {
+                document.getElementById('textDescContainer').style.display = this.value === 'text' ? 'block' : 'none';
+            });
+
+            document.getElementById('addSectionForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const title = document.getElementById('secTitle').value;
+                const type = document.getElementById('secType').value;
+                const content = document.getElementById('secContent').value;
+
+                db.ref('sections').push({ title, type, content });
+                document.getElementById('addSectionForm').reset();
+                document.getElementById('textDescContainer').style.display = 'none';
+                alert("تم إضافة القسم بنجاح!");
+            });
+
+            function listenAdminData() {
+                db.ref('products').on('value', snapshot => {
+                    const adminTable = document.getElementById('admin-products-table');
+                    const adminPreviewList = document.getElementById('admin-products-preview-list');
+                    if (!adminTable) return;
+
+                    adminTable.innerHTML = "";
+                    adminPreviewList.innerHTML = "";
+
+                    snapshot.forEach(child => {
+                        const p = child.val();
+                        const key = child.key;
+
+                        const discountBadgeHtml = p.isOffer && p.discountTag ? `<span class="discount-badge">${p.discountTag}</span>` : '';
+                        const oldPriceHtml = p.isOffer && p.oldPrice > 0 ? `<span class="old-price">${p.oldPrice} ج.م</span>` : '';
+
+                        adminPreviewList.innerHTML += `
+                            <div class="col-md-4 mb-4">
+                                <div class="product-card h-100 shadow">
+                                    ${discountBadgeHtml}
+                                    <div class="product-img-box">
+                                        <img src="${p.img || 'https://via.placeholder.com/300'}" alt="${p.name}">
+                                    </div>
+                                    <div class="card-body d-flex flex-column p-3">
+                                        <h5 class="card-title fw-bold text-white mb-2">${p.name}</h5>
+                                        <p class="card-text text-muted small flex-grow-1">${p.desc}</p>
+                                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary">
+                                            <div>
+                                                <span class="new-price">${p.price} ج.م</span>
+                                                ${oldPriceHtml}
+                                            </div>
+                                            <span class="badge bg-secondary">معاينة الآدمن</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        adminTable.innerHTML += `
+                            <tr>
+                                <td><img src="${p.img || 'https://via.placeholder.com/50'}" style="width: 50px; height: 50px; object-fit: contain; background: #fff; padding: 2px; border-radius: 5px;"></td>
+                                <td>${p.name}</td>
+                                <td>${p.isOffer ? '<span class="badge bg-danger">عرض خاص</span>' : '<span class="badge bg-secondary">عادي</span>'}</td>
+                                <td>${p.price} ج.م ${p.oldPrice ? '<br><small class="text-muted text-decoration-line-through">'+p.oldPrice+' ج.م</small>' : ''}</td>
+                                <td><input type="number" id="price_${key}" class="form-control form-control-sm" value="${p.price}"></td>
+                                <td>
+                                    <button class="btn btn-success btn-sm" onclick="updatePrice('${key}')">حفظ</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteProduct('${key}')">حذف</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                });
+
+                db.ref('sections').on('value', snapshot => {
+                    const sectionsTable = document.getElementById('admin-sections-table');
+                    if (!sectionsTable) return;
+                    sectionsTable.innerHTML = "";
+
+                    snapshot.forEach(child => {
+                        const sec = child.val();
+                        const key = child.key;
+
+                        sectionsTable.innerHTML += `
+                            <tr>
+                                <td>${sec.title}</td>
+                                <td>${sec.type === 'products' ? 'كل المنتجات' : (sec.type === 'offers' ? 'قسم العروض' : 'صفحة نصية')}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteSection('${key}')">حذف</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                });
+
+                db.ref('users').on('value', snapshot => {
+                    const adminUsersTable = document.getElementById('admin-users-table');
+                    if (!adminUsersTable) return;
+                    adminUsersTable.innerHTML = "";
+
+                    snapshot.forEach(child => {
+                        const u = child.val();
+                        const key = child.key;
+                        if (u.isAdmin) return;
+                        adminUsersTable.innerHTML += `
+                            <tr>
+                                <td>${u.name}</td>
+                                <td>${u.email}</td>
+                                <td>${u.isBlocked ? '<span class="text-danger">محظور</span>' : '<span class="text-success">نشط</span>'}</td>
+                                <td>
+                                    <button class="btn ${u.isBlocked ? 'btn-outline-success' : 'btn-outline-danger'} btn-sm" onclick="toggleBlock('${key}', ${u.isBlocked})">
+                                        ${u.isBlocked ? 'إلغاء الحظر' : 'حظر'}
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                });
+            }
+
+            window.updatePrice = function(key) {
+                const newPrice = parseFloat(document.getElementById(`price_${key}`).value);
+                db.ref(`products/${key}`).update({ price: newPrice });
+                alert("تم حفظ السعر الجديد!");
+            };
+
+            window.deleteProduct = function(key) {
+                if (confirm("هل تريد حذف هذا المنتج؟")) {
+                    db.ref(`products/${key}`).remove();
+                }
+            };
+
+            window.deleteSection = function(key) {
+                if (confirm("هل تريد حذف هذا القسم؟")) {
+                    db.ref(`sections/${key}`).remove();
+                }
+            };
+
+            window.toggleBlock = function(key, isBlocked) {
+                db.ref(`users/${key}`).update({ isBlocked: !isBlocked });
+            };
+
+            document.getElementById('addProductForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('newProdName').value;
+                const price = parseFloat(document.getElementById('newProdPrice').value);
+                const isOffer = document.getElementById('isOfferSelect').value === 'true';
+                const oldPrice = parseFloat(document.getElementById('oldPriceInput').value) || 0;
+                const discountTag = document.getElementById('discountTagInput').value || "";
+                const desc = document.getElementById('newProdDesc').value;
+                const imgUrl = document.getElementById('newProdImg').value;
+                const fileInput = document.getElementById('newProdFile');
+
+                const saveProduct = (imgData) => {
+                    db.ref('products').push({
+                        name, price, isOffer, oldPrice, discountTag, desc, img: imgData
+                    });
+                    document.getElementById('addProductForm').reset();
+                    document.querySelectorAll('.offer-fields').forEach(f => f.style.display = 'none');
+                    alert("تم إضافة المنتج بنجاح!");
+                };
+
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        saveProduct(e.target.result);
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else if (imgUrl) {
+                    saveProduct(imgUrl);
+                } else {
+                    alert("يرجى اختيار صورة أولاً!");
+                }
+            });
+
+            updateUI();
+        });
+    </script>
+</body>
+</html>
